@@ -1,3 +1,4 @@
+using JsonTaggerApi.EfCompatibleTypes;
 using Microsoft.EntityFrameworkCore;
 using System.IO;
 
@@ -5,13 +6,13 @@ namespace JsonTaggerApi
 {
     public class TaggerDbContext: DbContext
     {
-        public DbSet<DbFile> FileRecords { get; set; } = null!;
+        public DbSet<IndexedFile> FileRecords { get; set; } = null!;
 
         public TaggerDbContext(DbContextOptions<TaggerDbContext> options): base(options) {}
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<DbFile>()
+            modelBuilder.Entity<IndexedFile>()
                 .HasKey(x => x.Id);
         }
     }

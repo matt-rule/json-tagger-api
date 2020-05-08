@@ -1,8 +1,12 @@
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
-namespace JsonTaggerApi
+namespace JsonTaggerApi.EfCompatibleTypes
 {
-    public class DbFile
+    public class IndexedFile
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
@@ -24,5 +28,7 @@ namespace JsonTaggerApi
         public int? CachedHeight { get; set; }
 
         public string CachedShortImageStr { get; set; } = null!;
+
+        public ICollection<IndexedFileTagPair> FileTagPairs { get; set; } = null!;
     }
 }
