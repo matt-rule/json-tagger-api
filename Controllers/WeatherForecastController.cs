@@ -11,34 +11,27 @@ namespace JsonTaggerApi.Controllers
     [EnableCors]
     [ApiController]
     [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    public class TagListController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
-        private readonly ILogger<WeatherForecastController> _logger;
+        private readonly ILogger<TagListController> _logger;
 
         private TaggerDbContext _dbContext;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger, TaggerDbContext dbContext)
+        public TagListController(ILogger<TagListController> logger, TaggerDbContext dbContext)
         {
             _logger = logger;
             _dbContext = dbContext;
         }
 
         [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
+        public IEnumerable<string> Get()
         {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = _dbContext.FileRecords.First().FilePath + _dbContext.FileRecords.First().GuidFilePath
-            })
-            .ToArray();
+            return _dbContext.FileTagPairs.Select(x => x.Tag).Distinct();
         }
     }
 }
