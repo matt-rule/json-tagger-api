@@ -20,29 +20,25 @@ namespace JsonTaggerApi.Controllers
 
         private readonly ILogger<WeatherForecastController> _logger;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        private TaggerDbContext _dbContext;
+
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, TaggerDbContext dbContext)
         {
             _logger = logger;
+            _dbContext = dbContext;
         }
 
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
-            //var a = Directory.EnumerateFiles("/data");
-            //var b = Summaries[0];
-            using (var context = new TaggerDbContext(new DbContextOptions<TaggerDbContext>()))
+            var rng = new Random();
+            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
-                var rng = new Random();
-                return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-                {
-                    Date = DateTime.Now.AddDays(index),
-                    TemperatureC = rng.Next(-20, 55),
-                    //Summary = Summaries[rng.Next(Summaries.Length)]
-                    //Summary = Directory.EnumerateFiles("/data").ToArray()[0]
-                    Summary = context.FileRecords.First().FilePath
-                })
-                .ToArray();
-            }
+                Date = DateTime.Now.AddDays(index),
+                TemperatureC = rng.Next(-20, 55),
+                Summary = _dbContext.FileRecords.First().FilePath + _dbContext.FileRecords.First().GuidFilePath
+            })
+            .ToArray();
         }
     }
 }
