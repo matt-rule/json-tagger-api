@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -27,6 +29,13 @@ namespace json_tagger_api
         {
             services.AddCors();
             services.AddControllers();
+            
+            string dataPath = "/data";
+            string dbFileName = "data.db";
+            string filePath = Path.Join(dataPath, dbFileName);
+            string connectionStr = "Data Source=" + filePath;
+            services.AddDbContext<TaggerDbContext>(
+                options => options.UseSqlite(connectionStr));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
