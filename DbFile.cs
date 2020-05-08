@@ -1,8 +1,6 @@
-using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace json_tagger_api
+namespace JsonTaggerApi
 {
     public class DbFile
     {

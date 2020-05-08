@@ -1,6 +1,6 @@
 using System;
 
-namespace json_tagger_api
+namespace JsonTaggerApi
 {
     public class WeatherForecast
     {

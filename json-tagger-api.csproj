@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <RootNamespace>json_tagger_api</RootNamespace>
+    <RootNamespace>JsonTaggerApi</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
