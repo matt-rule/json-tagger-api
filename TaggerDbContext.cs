@@ -9,7 +9,7 @@ namespace json_tagger_api
 {
     public class TaggerDbContext: DbContext
     {
-        public DbSet<DbFile> FileRecords { get; set; }
+        public DbSet<DbFile> FileRecords { get; set; } = null!;
 
         public TaggerDbContext(DbContextOptions<TaggerDbContext> options): base(options) {}
 
