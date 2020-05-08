@@ -13,11 +13,6 @@ namespace JsonTaggerApi.Controllers
     [Route("[controller]")]
     public class TagListController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
         private readonly ILogger<TagListController> _logger;
 
         private TaggerDbContext _dbContext;
