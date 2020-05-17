@@ -1,15 +1,20 @@
+using System;
 using System.IO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 
 namespace JsonTaggerApi
 {
     public class Startup
     {
+        const string DATA_PATH = "/data";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -22,9 +27,8 @@ namespace JsonTaggerApi
         {
             services.AddCors();
             
-            string dataPath = "/data";
             string dbFileName = "data.db";
-            string filePath = Path.Join(dataPath, dbFileName);
+            string filePath = Path.Join(DATA_PATH, dbFileName);
             string connectionStr = "Data Source=" + filePath;
             services.AddDbContext<TaggerDbContext>(
                 options => options.UseSqlite(connectionStr));
@@ -39,6 +43,15 @@ namespace JsonTaggerApi
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseFileServer(new FileServerOptions
+            {
+                FileProvider = new PhysicalFileProvider(DATA_PATH),
+                RequestPath = new PathString("/file"),
+                EnableDirectoryBrowsing = false
+            });
+
+            app.UseStaticFiles();
 
             app.UseHttpsRedirection();
 
