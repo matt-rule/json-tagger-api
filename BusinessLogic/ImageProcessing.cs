@@ -1,5 +1,4 @@
-using JsonTaggerApi.EfCompatibleTypes;
-//using Microsoft.EntityFrameworkCore; // to remove
+using JsonTaggerApi.Types.EfCompatible;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

@@ -1,7 +1,7 @@
 using JsonTaggerApi.BasicTypes;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace JsonTaggerApi.EfCompatibleTypes
+namespace JsonTaggerApi.Types.EfCompatible
 {
     public class ImageMatch
     {

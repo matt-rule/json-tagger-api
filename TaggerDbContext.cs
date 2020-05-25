@@ -1,4 +1,4 @@
-using JsonTaggerApi.EfCompatibleTypes;
+using JsonTaggerApi.Types.EfCompatible;
 using Microsoft.EntityFrameworkCore;
 using System.IO;
 

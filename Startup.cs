@@ -13,7 +13,9 @@ namespace JsonTaggerApi
 {
     public class Startup
     {
-        const string DATA_PATH = "/data";
+        private const string JSONTAGGER_DATA_PATH_ENV_VAR = "JSONTAGGER_DATA_PATH";
+        private const string ENV_VAR_ERROR = "Could not find value for environment variable";
+        private const string DB_FILE_NAME = "data.db";
 
         public Startup(IConfiguration configuration)
         {
@@ -22,17 +24,24 @@ namespace JsonTaggerApi
 
         public IConfiguration Configuration { get; }
 
+        public Func<string> GetJsonTaggerPath = () => {
+            string? path = Environment.GetEnvironmentVariable(JSONTAGGER_DATA_PATH_ENV_VAR);
+
+            if (path == null)
+                throw new ApplicationException(ENV_VAR_ERROR + $": {JSONTAGGER_DATA_PATH_ENV_VAR}");
+
+            return path;
+        };
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
-            
-            string dbFileName = "data.db";
-            string filePath = Path.Join(DATA_PATH, dbFileName);
-            string connectionStr = "Data Source=" + filePath;
             services.AddDbContext<TaggerDbContext>(
-                options => options.UseSqlite(connectionStr));
-
+                options => options.UseSqlite(
+                    "Data Source=" + Path.Join(GetJsonTaggerPath(), DB_FILE_NAME)
+                )
+            );
             services.AddControllers();
         }
 
@@ -46,7 +55,7 @@ namespace JsonTaggerApi
 
             app.UseFileServer(new FileServerOptions
             {
-                FileProvider = new PhysicalFileProvider(DATA_PATH),
+                FileProvider = new PhysicalFileProvider(GetJsonTaggerPath()),
                 RequestPath = new PathString("/file"),
                 EnableDirectoryBrowsing = false
             });

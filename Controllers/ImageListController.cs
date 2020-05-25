@@ -1,8 +1,11 @@
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+
+using JsonTaggerApi.Types.JsonSerialisable;
 
 namespace JsonTaggerApi.Controllers
 {
@@ -11,6 +14,8 @@ namespace JsonTaggerApi.Controllers
     [Route("[controller]")]
     public class ImageListController : ControllerBase
     {
+        const int ITEMS_PER_PAGE = 20;
+
         private readonly ILogger<ImageListController> _logger;
 
         private TaggerDbContext _dbContext;
@@ -22,9 +27,24 @@ namespace JsonTaggerApi.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<string> Get()
+        public string Get()
         {
-            return _dbContext.FileRecords.Select(x => x.FilePath);
+            return
+                JsonConvert.SerializeObject(
+                _dbContext
+                    .FileRecords
+                    .Take(ITEMS_PER_PAGE)
+                    .AsEnumerable()
+                    .Select(x => (
+                        new ImageListWebResult {
+                            origFilePath = x.OriginalFilePath,
+                            thumb =
+                                BusinessLogic.ImageProcessing.GetThumbFileName(
+                                    Path.GetFileNameWithoutExtension(x.GuidFilePath)
+                                )
+                        }
+                    ))
+                );
         }
     }
 }
