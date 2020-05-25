@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -38,10 +39,38 @@ namespace JsonTaggerApi.BusinessLogic
                 MapRegions (region, (x, y) => image.GetPixel(x, y).B)
             };
 
-        // Call with new Bitmap(imageFilename)
+        /// <summary>
+        /// Call with new Bitmap(imageFilename)
+        /// </summary>
+        /// <returns></returns>
         public static IEnumerable<double[]> PixelColourAverages(Bitmap bmp, int divisionsPerAxis) =>
             ImageRegion
             .Divide(divisionsPerAxis, bmp.Width, bmp.Height)
             .Select(x => AveragePixelColour(bmp, x));
+
+        /// <summary>
+        /// Takes an image from a memory stream and downscales it to a thumbnail of the specified width and height.
+        /// Aspect ratio is lost.
+        /// </summary>
+        /// <param name="source">The Stream to get the image from.</param>
+        /// <param name="width">The target width.</param>
+        /// <param name="height">The target height.</param>
+        /// <returns>A thumbnail image of the specified dimensions.</returns>
+        public static Func<Stream, int, int, Image?> CreateThumbnail = (Stream source, int width, int height) => {
+
+            var memoryStream = new MemoryStream();
+            source.CopyTo(memoryStream);
+
+            try {
+                var image = Image.FromStream(memoryStream);
+                return image.GetThumbnailImage(width, height, () => false, IntPtr.Zero);
+            }
+            catch {
+                return null;
+            }
+        };
+
+        public static string GetThumbFileName(string filenameWithoutExtension) =>
+            "thumb_" + filenameWithoutExtension + ".jpg";
     }
 }
