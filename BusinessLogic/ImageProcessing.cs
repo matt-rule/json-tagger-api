@@ -69,7 +69,14 @@ namespace JsonTaggerApi.BusinessLogic
             }
         };
 
-        public static string GetThumbFileName(string filenameWithoutExtension) =>
-            "thumb_" + filenameWithoutExtension + ".jpg";
+        /// <summary>
+        /// Construct a suitable filename for a thumbnail, including the extension.
+        /// </summary>
+        /// <param name="filenameWithoutExtension">The base string to use, not including an extension nor the . character.</param>
+        /// <returns>null if any characters were encountered in the base string, or the thumbnail filename if valid.</returns>
+        public static Func<string, string?> GetThumbFileName = (string filenameWithoutExtension) =>
+            (filenameWithoutExtension.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
+                ? null
+                : "thumb_" + filenameWithoutExtension + ".jpg";
     }
 }

@@ -42,6 +42,7 @@ namespace JsonTaggerApi.Controllers
                                 BusinessLogic.ImageProcessing.GetThumbFileName(
                                     Path.GetFileNameWithoutExtension(x.GuidFilePath)
                                 )
+                                ?? throw new InvalidDataException("Invalid GUID from file record table in DB.")
                         }
                     ))
                 );

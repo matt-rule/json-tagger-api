@@ -21,7 +21,11 @@ namespace JsonTaggerApi.FileOperations
             string localFilename = filenameWithoutExtension + extension;
             string localFilePath = Path.Combine(path, localFilename);
             string thumbnailFolderPath = Path.Combine(path, "thumbnails");
-            string thumbnailFilename = ImageProcessing.GetThumbFileName(filenameWithoutExtension);
+            string? thumbnailFilename = ImageProcessing.GetThumbFileName(filenameWithoutExtension);
+
+            if (thumbnailFilename == null)
+                return;
+
             string thumbnailPath = Path.Combine(thumbnailFolderPath, thumbnailFilename);
 
             if (!System.IO.File.Exists(thumbnailPath))
