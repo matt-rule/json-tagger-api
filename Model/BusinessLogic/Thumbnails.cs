@@ -7,12 +7,17 @@ namespace JsonTaggerApi.Model.BusinessLogic
 {
     public static class Thumbnails
     {
+        public const string THUMBNAIL_EXTERNAL_PATH = "file/thumbnails/";
+
+        public static Func<string, string?> GetThumbnailFilePath = (string basis) =>
+            THUMBNAIL_EXTERNAL_PATH + GetThumbnailFilename(basis);
+
         /// <summary>
         /// Construct a suitable filename for a thumbnail, including the extension.
         /// </summary>
         /// <param name="basis">The string to build the filename around, not including an extension nor the . character.</param>
         /// <returns>null if any characters were encountered in the base string, or the thumbnail filename if valid.</returns>
-        public static Func<string, string?> MakeThumbnailFilename = (string basis) =>
+        public static Func<string, string?> GetThumbnailFilename = (string basis) =>
             (basis.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
                 ? null
                 : "thumb_" + basis + ".jpg";
@@ -29,7 +34,7 @@ namespace JsonTaggerApi.Model.BusinessLogic
             string localFilename = filenameWithoutExtension + extension;
             string localFilePath = Path.Combine(path, localFilename);
             string thumbnailFolderPath = Path.Combine(path, "thumbnails");
-            string? thumbnailFilename = MakeThumbnailFilename(filenameWithoutExtension);
+            string? thumbnailFilename = GetThumbnailFilename(filenameWithoutExtension);
 
             if (thumbnailFilename == null)
                 return;
