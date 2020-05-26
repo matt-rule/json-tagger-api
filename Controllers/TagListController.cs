@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace JsonTaggerApi.Controllers
@@ -24,9 +22,9 @@ namespace JsonTaggerApi.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<string> Get()
+        public List<string> Get()
         {
-            return _dbContext.FileTagPairs.Select(x => x.Tag).Distinct();
+            return _dbContext.FileTagPairs.Select(x => x.Tag).Distinct().ToList();
         }
     }
 }

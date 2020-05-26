@@ -22,7 +22,7 @@ namespace JsonTaggerApi.Model.BusinessLogic
             )
             .ToArray();
 
-        public static IEnumerable<RectangularRegion> GetRegionsFromXYRanges((int, int)[] xRanges, (int, int)[] yRanges) =>
+        public static List<RectangularRegion> GetRegionsFromXYRanges((int, int)[] xRanges, (int, int)[] yRanges) =>
             yRanges
                 .SelectMany(yRange =>
                     xRanges
@@ -34,12 +34,14 @@ namespace JsonTaggerApi.Model.BusinessLogic
                             yRange.Item2
                         )
                     )
-                );
+                )
+                .ToList();
 
-        public static IEnumerable<RectangularRegion> Divide(int divisionsPerAxis, int width, int height) =>
+        public static List<RectangularRegion> Divide(int divisionsPerAxis, int width, int height) =>
             GetRegionsFromXYRanges(
                 RangesForAxis(divisionsPerAxis, width),
                 RangesForAxis(divisionsPerAxis, height)
-            );
+            )
+            .ToList();
     }
 }

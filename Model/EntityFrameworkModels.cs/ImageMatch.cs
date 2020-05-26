@@ -1,4 +1,3 @@
-using JsonTaggerApi.Model;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace JsonTaggerApi.Model.EntityFrameworkModels
@@ -25,5 +24,13 @@ namespace JsonTaggerApi.Model.EntityFrameworkModels
             Guid = guid;
         }
 
+        public static ImageMatch AddGuidToMatchIfMissing(ImageMatch original) =>
+            new ImageMatch(
+                original.Filename1,
+                original.Filename2,
+                original.Difference,
+                original.Decision,
+                original.Guid ?? System.Guid.NewGuid().ToString()
+            );
     }
 }

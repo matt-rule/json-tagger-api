@@ -3,8 +3,8 @@ using System.Linq;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 
+using JsonTaggerApi.Model;
 using JsonTaggerApi.Model.BusinessLogic;
 using JsonTaggerApi.Model.Json;
 
@@ -31,22 +31,21 @@ namespace JsonTaggerApi.Controllers
         public string Get()
         {
             return
-                JsonConvert.SerializeObject(
                 _dbContext
-                    .FileRecords
-                    .Take(ITEMS_PER_PAGE)
-                    .AsEnumerable()
-                    .Select(x => (
-                        new ImageListWebResult {
-                            origFilePath = x.OriginalFilePath,
-                            thumb =
-                                ImageProcessing.GetThumbFileName(
-                                    Path.GetFileNameWithoutExtension(x.GuidFilePath)
-                                )
-                                ?? throw new InvalidDataException("Invalid GUID from file record table in DB.")
-                        }
-                    ))
-                );
+                .FileRecords
+                .Take(ITEMS_PER_PAGE)
+                .AsEnumerable()
+                .Select(x => (
+                    new ImageListWebResult {
+                        origFilePath = x.OriginalFilePath,
+                        thumb =
+                            Thumbnails.MakeThumbnailFilename(
+                                Path.GetFileNameWithoutExtension(x.GuidFilePath)
+                            )
+                            ?? throw new InvalidDataException("Invalid GUID from file record table in DB.")
+                    }
+                ))
+                .ToJson();
         }
     }
 }
