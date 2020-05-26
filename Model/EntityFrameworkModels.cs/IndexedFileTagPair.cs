@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace JsonTaggerApi.Types.EfCompatible
+namespace JsonTaggerApi.Model.EntityFrameworkModels
 {
     public class IndexedFileTagPair
     {

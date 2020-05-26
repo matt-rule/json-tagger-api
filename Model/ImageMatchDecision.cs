@@ -1,4 +1,4 @@
-namespace JsonTaggerApi.BasicTypes
+namespace JsonTaggerApi.Model
 {
     public enum ImageMatchDecision {
         ToDecide,

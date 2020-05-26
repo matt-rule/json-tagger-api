@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-using JsonTaggerApi.Types.JsonSerialisable;
+using JsonTaggerApi.Model.BusinessLogic;
+using JsonTaggerApi.Model.Json;
 
 namespace JsonTaggerApi.Controllers
 {
@@ -39,7 +40,7 @@ namespace JsonTaggerApi.Controllers
                         new ImageListWebResult {
                             origFilePath = x.OriginalFilePath,
                             thumb =
-                                BusinessLogic.ImageProcessing.GetThumbFileName(
+                                ImageProcessing.GetThumbFileName(
                                     Path.GetFileNameWithoutExtension(x.GuidFilePath)
                                 )
                                 ?? throw new InvalidDataException("Invalid GUID from file record table in DB.")

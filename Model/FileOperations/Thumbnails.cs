@@ -3,9 +3,9 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 
-using JsonTaggerApi.BusinessLogic;
+using JsonTaggerApi.Model.BusinessLogic;
 
-namespace JsonTaggerApi.FileOperations
+namespace JsonTaggerApi.Model.FileOperations
 {
     public static class Thumbnails
     {

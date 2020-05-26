@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace JsonTaggerApi.BusinessLogic
+namespace JsonTaggerApi.Model.BusinessLogic
 {
     public static class FileTags
     {

@@ -1,4 +1,4 @@
-namespace JsonTaggerApi.Types.JsonSerialisable
+namespace JsonTaggerApi.Model.Json
 {
     public struct ImageListWebResult
     {

@@ -1,4 +1,4 @@
-namespace JsonTaggerApi.BusinessLogic
+namespace JsonTaggerApi.Model
 {
     /// <summary>
     /// Holds the extents (inclusive minimum and maximum X and Y) of a rectangular region.

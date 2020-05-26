@@ -1,4 +1,4 @@
-using JsonTaggerApi.Types.EfCompatible;
+using JsonTaggerApi.Model.EntityFrameworkModels;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 
-namespace JsonTaggerApi.BusinessLogic
+namespace JsonTaggerApi.Model.BusinessLogic
 {
     public static class ImageProcessing
     {

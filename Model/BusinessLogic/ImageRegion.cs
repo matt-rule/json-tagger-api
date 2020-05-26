@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace JsonTaggerApi.BusinessLogic
+namespace JsonTaggerApi.Model.BusinessLogic
 {
     /// <summary>
     /// Methods relevant to rectangular image regions.
