@@ -38,11 +38,7 @@ namespace JsonTaggerApi.Controllers
                 .Select(x => (
                     new ImageListWebResult {
                         origFilePath = x.OriginalFilePath,
-                        thumb =
-                            Thumbnails.GetThumbnailFilePath(
-                                Path.GetFileNameWithoutExtension(x.GuidFilePath)
-                            )
-                            ?? throw new InvalidDataException("Invalid GUID from file record table in DB.")
+                        guid = Path.GetFileNameWithoutExtension(x.GuidFilePath)
                     }
                 ))
                 .ToJson();

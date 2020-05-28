@@ -4,6 +4,6 @@ namespace JsonTaggerApi.Model.Json
     {
         public string origFilePath;
 
-        public string thumb;
+        public string guid;
     }
 }
