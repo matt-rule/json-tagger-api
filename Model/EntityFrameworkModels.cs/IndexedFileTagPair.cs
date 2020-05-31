@@ -9,7 +9,7 @@ namespace JsonTaggerApi.Model.EntityFrameworkModels
 
         public string Tag { get; set; } = null!;
 
-        public int FileId { get; set; }
+        public int FileRecordId { get; set; }
 
         public IndexedFile FileRecord { get; set; } = null!;
 
@@ -18,7 +18,7 @@ namespace JsonTaggerApi.Model.EntityFrameworkModels
         public IndexedFileTagPair(string tag, int fileId)
         {
             Tag = tag;
-            FileId = fileId;
+            FileRecordId = fileId;
         }
     }
 }

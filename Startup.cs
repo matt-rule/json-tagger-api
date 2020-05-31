@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace JsonTaggerApi
 {
@@ -23,6 +24,8 @@ namespace JsonTaggerApi
         }
 
         public IConfiguration Configuration { get; }
+        public static readonly ILoggerFactory MyLoggerFactory
+            = LoggerFactory.Create(builder => { builder.AddDebug(); });
 
         public Func<string> GetJsonTaggerPath = () => {
             string? path = Environment.GetEnvironmentVariable(JSONTAGGER_DATA_PATH_ENV_VAR);
@@ -38,7 +41,9 @@ namespace JsonTaggerApi
         {
             services.AddCors();
             services.AddDbContext<TaggerDbContext>(
-                options => options.UseSqlite(
+                options => options
+                .UseLoggerFactory(MyLoggerFactory)
+                .UseSqlite(
                     "Data Source=" + Path.Join(GetJsonTaggerPath(), DB_FILE_NAME)
                 )
             );

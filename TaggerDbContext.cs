@@ -23,7 +23,7 @@ namespace JsonTaggerApi
             modelBuilder.Entity<IndexedFileTagPair>()
                 .HasOne<IndexedFile>(x => x.FileRecord)
                 .WithMany(x => x.FileTagPairs)
-                .HasForeignKey(x => x.FileId);
+                .HasForeignKey(x => x.FileRecordId);
         }
     }
 }
