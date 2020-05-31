@@ -75,8 +75,7 @@ namespace JsonTaggerApi.Controllers
                 .ToList();
 
             return
-                (query ?? "")
-                + _dbContext.FileRecords
+                _dbContext.FileRecords
                 .Where(fileRec => stringsToInclude.Count == 0 ? true : idsPassingIncludeCriteria.Contains(fileRec.Id))
                 .Where(fileRec => !idsMatchingExcludeCriteria.Contains(fileRec.Id))
                 .Take(ITEMS_PER_PAGE)
