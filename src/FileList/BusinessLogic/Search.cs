@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
@@ -9,47 +11,34 @@ namespace JsonTaggerApi.FileList.BusinessLogic
     {
         const int ITEMS_PER_PAGE = 20;
         
+        public static ImmutableList<int> FileIdsMatchingCriteria(TaggerDbContext dbContext, ImmutableList<string> terms, Func<IEnumerable<ImmutableList<int>>, Func<ImmutableList<int>, bool>, bool> anyOrAll)
+        {
+            ImmutableList<ImmutableList<int>> fileIdsPerTerm =
+                terms.Select
+                    (s =>
+                        (
+                            from pair in dbContext.FileTagPairs
+                            where EF.Functions.Like(pair.Tag, $"%{s}%")
+                            select pair.FileRecordId
+                        )
+                        .ToImmutableList()
+                    ).ToImmutableList();
+
+            return fileIdsPerTerm
+                .SelectMany(x => x)
+                .Distinct()
+                .Where(x => anyOrAll(fileIdsPerTerm, y => y.Contains(x)))
+                .ToImmutableList();
+        }
+
         public static string Run(TaggerDbContext dbContext, ProcessedInput userQuery)
         {
-            ImmutableList<ImmutableList<int>> fileIdsPerIncludeString =
-                userQuery.IncludeTerms.Select
-                    (s =>
-                        (
-                            from pair in dbContext.FileTagPairs
-                            where EF.Functions.Like(pair.Tag, $"%{s}%")
-                            select pair.FileRecordId
-                        )
-                        .ToImmutableList()
-                    ).ToImmutableList();
-
-            ImmutableList<int> idsPassingIncludeCriteria =
-                fileIdsPerIncludeString
-                .SelectMany(x => x)
-                .Distinct()
-                .Where(x => fileIdsPerIncludeString.All(y => y.Contains(x)))
-                .ToImmutableList();
-
-            ImmutableList<ImmutableList<int>> fileIdsPerExcludeString =
-                userQuery.ExcludeTerms.Select
-                    (s =>
-                        (
-                            from pair in dbContext.FileTagPairs
-                            where EF.Functions.Like(pair.Tag, $"%{s}%")
-                            select pair.FileRecordId
-                        )
-                        .ToImmutableList()
-                    ).ToImmutableList();
-
-            ImmutableList<int> idsMatchingExcludeCriteria =
-                fileIdsPerExcludeString
-                .SelectMany(x => x)
-                .Distinct()
-                .Where(x => fileIdsPerExcludeString.Any(y => y.Contains(x)))
-                .ToImmutableList();
+            var idsMatchingIncludeCriteria = FileIdsMatchingCriteria(dbContext, userQuery.IncludeTerms, Enumerable.All);
+            var idsMatchingExcludeCriteria = FileIdsMatchingCriteria(dbContext, userQuery.ExcludeTerms, Enumerable.Any);
 
             return
                 dbContext.FileRecords
-                .Where(fileRec => userQuery.IncludeTerms.Count == 0 ? true : idsPassingIncludeCriteria.Contains(fileRec.Id))
+                .Where(fileRec => userQuery.IncludeTerms.Count == 0 ? true : idsMatchingIncludeCriteria.Contains(fileRec.Id))
                 .Where(fileRec => !idsMatchingExcludeCriteria.Contains(fileRec.Id))
                 .Take(ITEMS_PER_PAGE)
                 .AsEnumerable()
