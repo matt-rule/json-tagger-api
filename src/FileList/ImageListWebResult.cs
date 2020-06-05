@@ -1,4 +1,4 @@
-namespace JsonTaggerApi.Model.Json
+namespace JsonTaggerApi.FileList
 {
     public struct ImageListWebResult
     {

@@ -1,17 +1,13 @@
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-using JsonTaggerApi.Model;
-using JsonTaggerApi.Model.Json;
-using System.Diagnostics;
-using Microsoft.EntityFrameworkCore;
-
-namespace JsonTaggerApi.Controllers
+namespace JsonTaggerApi.FileList
 {
     [EnableCors]
     [ApiController]

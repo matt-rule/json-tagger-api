@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 
-namespace JsonTaggerApi.Model.BusinessLogic
+namespace JsonTaggerApi.FileList.BusinessLogic
 {
     public static class Thumbnails
     {

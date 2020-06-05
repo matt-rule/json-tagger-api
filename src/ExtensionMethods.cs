@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace JsonTaggerApi.Model
+namespace JsonTaggerApi
 {
     public static class ExtensionMethods
     {

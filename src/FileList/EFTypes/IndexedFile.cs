@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace JsonTaggerApi.Model.EntityFrameworkModels
+namespace JsonTaggerApi.FileList.EFTypes
 {
     public class IndexedFile
     {

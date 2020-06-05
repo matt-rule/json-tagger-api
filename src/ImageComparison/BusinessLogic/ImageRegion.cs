@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace JsonTaggerApi.Model.BusinessLogic
+using JsonTaggerApi.ImageComparison.BasicTypes;
+
+namespace JsonTaggerApi.ImageComparison.BusinessLogic
 {
     /// <summary>
     /// Methods relevant to rectangular image regions.

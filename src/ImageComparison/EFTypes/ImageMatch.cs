@@ -1,6 +1,8 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace JsonTaggerApi.Model.EntityFrameworkModels
+using JsonTaggerApi.ImageComparison.BasicTypes;
+
+namespace JsonTaggerApi.ImageComparison.EFTypes
 {
     public class ImageMatch
     {

@@ -1,4 +1,4 @@
-using JsonTaggerApi.Model.EntityFrameworkModels;
+using JsonTaggerApi.FileList.EFTypes;
 using Microsoft.EntityFrameworkCore;
 using System.IO;
 

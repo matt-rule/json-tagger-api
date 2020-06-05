@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
+using JsonTaggerApi.ImageComparison.BasicTypes;
 
-namespace JsonTaggerApi.Model.BusinessLogic
+namespace JsonTaggerApi.ImageComparison.BusinessLogic
 {
     public static class ImageProcessing
     {

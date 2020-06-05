@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace JsonTaggerApi.Model.BusinessLogic
+namespace JsonTaggerApi.ImageComparison.BusinessLogic
 {
     public static class ShortImageString
     {

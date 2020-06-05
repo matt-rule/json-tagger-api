@@ -1,4 +1,4 @@
-namespace JsonTaggerApi.Model
+namespace JsonTaggerApi.ImageComparison.BasicTypes
 {
     /// <summary>
     /// Holds the extents (inclusive minimum and maximum X and Y) of a rectangular region.
