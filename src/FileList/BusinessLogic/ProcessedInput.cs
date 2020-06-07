@@ -28,7 +28,7 @@ namespace JsonTaggerApi.FileList.BusinessLogic
                 .Where(x => !String.IsNullOrWhiteSpace(x))
                 .ToImmutableList();
 
-            Page = Utility.ParseIntDefaultZero(page);
+            Page = Utility.ParseInt(page) ?? 1;
         } 
     }
 }

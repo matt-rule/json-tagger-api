@@ -4,11 +4,9 @@ namespace JsonTaggerApi
 {
     public static class Utility
     {
-        public static int ParseIntDefaultZero(string? toParse)
+        public static int? ParseInt(string? toParse)
         {
-            int parseResult = 0;
-            bool parseSuccess = Int32.TryParse(toParse, out parseResult);
-            return parseResult;
+            return Int32.TryParse(toParse, out int parseResult) ? parseResult : (int?)null;
         }
     }
 }

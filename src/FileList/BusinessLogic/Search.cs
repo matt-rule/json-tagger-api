@@ -38,10 +38,13 @@ namespace JsonTaggerApi.FileList.BusinessLogic
             var idsMatchingIncludeCriteria = FileIdsMatchingCriteria(dbContext, userQuery.IncludeTerms, Enumerable.All);
             var idsMatchingExcludeCriteria = FileIdsMatchingCriteria(dbContext, userQuery.ExcludeTerms, Enumerable.Any);
 
+            var page = Math.Max(1, userQuery.Page);
+
             return
                 dbContext.FileRecords
                 .Where(fileRec => userQuery.IncludeTerms.Count == 0 ? true : idsMatchingIncludeCriteria.Contains(fileRec.Id))
                 .Where(fileRec => !idsMatchingExcludeCriteria.Contains(fileRec.Id))
+                .Skip(ITEMS_PER_PAGE * (page - 1))
                 .Take(ITEMS_PER_PAGE)
                 .AsEnumerable()
                 .Select(x => (
