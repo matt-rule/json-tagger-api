@@ -1,6 +1,6 @@
-namespace JsonTaggerApi.FileList
+namespace JsonTaggerApi.FileList.ViewModels
 {
-    public struct ImageListWebResult
+    public struct FileInfoItem
     {
         public string origFilePath;
 

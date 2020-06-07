@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
+using JsonTaggerApi.FileList.ViewModels;
+
 namespace JsonTaggerApi.FileList.BusinessLogic
 {
     public static class Search
@@ -43,7 +45,7 @@ namespace JsonTaggerApi.FileList.BusinessLogic
                 .Take(ITEMS_PER_PAGE)
                 .AsEnumerable()
                 .Select(x => (
-                    new ImageListWebResult {
+                    new FileInfoItem {
                         origFilePath = x.OriginalFilePath,
                         guid = Path.GetFileNameWithoutExtension(x.GuidFilePath)
                     }

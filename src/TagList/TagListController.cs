@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace JsonTaggerApi.Controllers
+namespace JsonTaggerApi.TagList
 {
     [EnableCors]
     [ApiController]
