@@ -13,7 +13,7 @@ namespace JsonTaggerApi.FileList.BusinessLogic
     {
         const int ITEMS_PER_PAGE = 20;
         
-        public static ImmutableList<int> FileIdsMatchingCriteria(TaggerDbContext dbContext, ImmutableList<string> terms, Func<IEnumerable<ImmutableList<int>>, Func<ImmutableList<int>, bool>, bool> anyOrAll)
+        private static ImmutableList<int> FileIdsMatchingCriteria(TaggerDbContext dbContext, ImmutableList<string> terms, Func<IEnumerable<ImmutableList<int>>, Func<ImmutableList<int>, bool>, bool> anyOrAll)
         {
             ImmutableList<ImmutableList<int>> fileIdsPerTerm =
                 terms.Select
@@ -33,28 +33,26 @@ namespace JsonTaggerApi.FileList.BusinessLogic
                 .ToImmutableList();
         }
 
-        public static string Run(TaggerDbContext dbContext, ProcessedInput userQuery)
+        private static IQueryable<EFTypes.IndexedFile> Filter(TaggerDbContext dbContext, ProcessedInput userQuery)
         {
             var idsMatchingIncludeCriteria = FileIdsMatchingCriteria(dbContext, userQuery.IncludeTerms, Enumerable.All);
             var idsMatchingExcludeCriteria = FileIdsMatchingCriteria(dbContext, userQuery.ExcludeTerms, Enumerable.Any);
 
+            return dbContext.FileRecords
+                .Where(fileRec => userQuery.IncludeTerms.Count == 0 ? true : idsMatchingIncludeCriteria.Contains(fileRec.Id))
+                .Where(fileRec => !idsMatchingExcludeCriteria.Contains(fileRec.Id));
+        }
+
+        public static IEnumerable<EFTypes.IndexedFile> GetPage(TaggerDbContext dbContext, ProcessedInput userQuery)
+        {
+
             var page = Math.Max(1, userQuery.Page);
 
             return
-                dbContext.FileRecords
-                .Where(fileRec => userQuery.IncludeTerms.Count == 0 ? true : idsMatchingIncludeCriteria.Contains(fileRec.Id))
-                .Where(fileRec => !idsMatchingExcludeCriteria.Contains(fileRec.Id))
+                Filter(dbContext, userQuery)
                 .Skip(ITEMS_PER_PAGE * (page - 1))
                 .Take(ITEMS_PER_PAGE)
-                .AsEnumerable()
-                .Select(x => (
-                    new FileInfoItem {
-                        origFilePath = x.OriginalFilePath,
-                        guid = Path.GetFileNameWithoutExtension(x.GuidFilePath)
-                    }
-                ))
-                .ToImmutableList()
-                .ToJson();
+                .AsEnumerable();
         }
     }
 }

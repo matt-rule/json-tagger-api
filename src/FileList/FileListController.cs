@@ -1,8 +1,10 @@
+using System.IO;
+using System.Linq;
+using JsonTaggerApi.FileList.BusinessLogic;
+using JsonTaggerApi.FileList.ViewModels;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-
-using JsonTaggerApi.FileList.BusinessLogic;
 
 namespace JsonTaggerApi.FileList
 {
@@ -24,7 +26,14 @@ namespace JsonTaggerApi.FileList
         [HttpGet]
         public string Get(string? query, string? page)
         {
-            return Search.Run(_dbContext, new ProcessedInput(query, page));
+            return Search.GetPage(_dbContext, new ProcessedInput(query, page))
+                .Select(x => (
+                    new FileInfoItem {
+                        origFilePath = x.OriginalFilePath,
+                        guid = Path.GetFileNameWithoutExtension(x.GuidFilePath)
+                    }
+                ))
+                .ToJson();
         }
     }
 }
