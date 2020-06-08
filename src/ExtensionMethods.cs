@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
 
 namespace JsonTaggerApi
@@ -8,9 +11,7 @@ namespace JsonTaggerApi
         /// Calls JsonConvert.SerializeObject inline.
         /// </summary>
         /// <returns>The object, in JSON format.</returns>
-        public static string ToJson(this object obj)
-        {
-            return JsonConvert.SerializeObject(obj);
-        }
+        public static string ToJson(this object obj) =>
+            JsonConvert.SerializeObject(obj);
     }
 }

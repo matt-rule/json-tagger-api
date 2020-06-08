@@ -11,8 +11,6 @@ namespace JsonTaggerApi.FileList.BusinessLogic
 {
     public static class Search
     {
-        const int ITEMS_PER_PAGE = 20;
-        
         private static ImmutableList<int> FileIdsMatchingCriteria(TaggerDbContext dbContext, ImmutableList<string> terms, Func<IEnumerable<ImmutableList<int>>, Func<ImmutableList<int>, bool>, bool> anyOrAll)
         {
             ImmutableList<ImmutableList<int>> fileIdsPerTerm =
@@ -39,19 +37,20 @@ namespace JsonTaggerApi.FileList.BusinessLogic
             var idsMatchingExcludeCriteria = FileIdsMatchingCriteria(dbContext, userQuery.ExcludeTerms, Enumerable.Any);
 
             return dbContext.FileRecords
+                .Include(fileRec => fileRec.FileTagPairs)
                 .Where(fileRec => userQuery.IncludeTerms.Count == 0 ? true : idsMatchingIncludeCriteria.Contains(fileRec.Id))
                 .Where(fileRec => !idsMatchingExcludeCriteria.Contains(fileRec.Id));
         }
 
-        public static IEnumerable<EFTypes.IndexedFile> GetPage(TaggerDbContext dbContext, ProcessedInput userQuery)
+        public static IEnumerable<EFTypes.IndexedFile> GetPage(TaggerDbContext dbContext, ProcessedInput userQuery, int itemsPerPage)
         {
 
             var page = Math.Max(1, userQuery.Page);
 
             return
                 Filter(dbContext, userQuery)
-                .Skip(ITEMS_PER_PAGE * (page - 1))
-                .Take(ITEMS_PER_PAGE)
+                .Skip(itemsPerPage * (page - 1))
+                .Take(itemsPerPage)
                 .AsEnumerable();
         }
     }

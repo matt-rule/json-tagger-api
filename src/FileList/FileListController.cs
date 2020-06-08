@@ -13,6 +13,8 @@ namespace JsonTaggerApi.FileList
     [Route("[controller]")]
     public class FileListController : ControllerBase
     {
+        private const int ITEMS_PER_PAGE = 48;
+
         private readonly ILogger<FileListController> _logger;
 
         private TaggerDbContext _dbContext;
@@ -26,11 +28,12 @@ namespace JsonTaggerApi.FileList
         [HttpGet]
         public string Get(string? query, string? page)
         {
-            return Search.GetPage(_dbContext, new ProcessedInput(query, page))
+            return Search.GetPage(_dbContext, new ProcessedInput(query, page), ITEMS_PER_PAGE)
                 .Select(x => (
                     new FileInfoItem {
-                        origFilePath = x.OriginalFilePath,
-                        guid = Path.GetFileNameWithoutExtension(x.GuidFilePath)
+                        origFilePath = x?.OriginalFilePath ?? "",
+                        metadataJson = FileMetadata.GetJson(x, true),
+                        guid = Path.GetFileNameWithoutExtension(x?.GuidFilePath ?? "") ?? ""
                     }
                 ))
                 .ToJson();
